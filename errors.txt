@@ -1,0 +1,103 @@
+# Bu dosya, http/https girişi kullanıldığında kullanıcıya gösterilen hata mesajlarını içerir.
+# Bu mesajlar, farklı dillere çeviriler de dahil olmak üzere kullanıcı arayüzünü daha
+# kolay hale getirmek için değiştirilebilir.
+#
+# Burada çeşitli değişkenler de kullanılabilir. En sık kullanılanlar şunlardır:
+# $(error-orig) - etkin noktadan orijinal hata mesajı
+# $(ip) - bir müşterinin ip adresi
+# $(username) - oturum açmaya çalışan müşterinin kullanıcı adı
+# 
+# internal-error (İç hata)
+# Asla olmamalı. Olursa, bu hata mesajını görüntüleyen hata sayfası
+# gösterilecektir (error-orig, hatanın ne olduğunu açıklayacaktır.)
+
+internal-error = Dahili hata ($(error-orig))
+
+# config-error (yapılandırma hatası)
+# Hotspot düzgün yapılandırılmışsa asla olmamalıdır.
+
+config-error = Konfigürasyon hatası ($(error-orig))
+
+# not-logged-in (Giriş yapmadınız)
+# Gerçekte oturum açmamış olan kullanıcı tarafından durum veya 
+# oturum kapatma sayfası istenirse gerçekleşir
+
+not-logged-in = Giriş yapmadınız. (ip $(ip))
+
+# ippool-empty (ip havuzu boş)
+# Kullanıcı için IP adresi ip havuzundan atanacak, ancak o havuzda başka adres yok
+
+ippool-empty = İp adresi atanamıyor veya havuzda başka boş adres yok.
+
+# shutting-down (Kapatılıyor)
+# Kapatma yürütüldüğünde, yeni istemciler kabul edilmez
+
+shutting-down = Etkin nokta hizmeti kapatılıyor.
+
+# user-session-limit (kullanıcı oturumu sınırı)
+# Kullanıcı profilinde paylaşılan kullanıcı sınırı varsa, 
+# bu hata bu sınıra ulaştıktan sonra gösterilecektir.
+
+
+user-session-limit = $(username) kullanıcısı için daha fazla oturuma izin verilmez.
+
+# license-session-limit (lisans oturumu sınırı)
+# Aktif etkin nokta istemcilerinin lisans sayısına bağlı olarak bir veya başka 
+# bir miktarla sınırlıdır. Bu sınıra ulaşılırsa aşağıdaki hata görüntülenir.
+
+license-session-limit = Oturum sınırına ulaşıldı. ($(error-orig))
+
+# wrong-mac-username (yanlış mac kullanıcı adı)
+# Kullanıcı adı MAC adresine benziyorsa (12:34:56:78:9a:bc), ancak bu istemcinin 
+# MAC adresi değilse, oturum açma reddedilir
+
+wrong-mac-username = Geçersiz kullanıcı adı ($(username)): bu MAC adresi size ait değil.
+
+# chap-missing
+# Eğer http-chap login metodu kullanılıyorsa fakat hotspot programı şifreli 
+# şifreyi geri almıyorsa bu hata mesajı çıkıyor.
+# Muhtemel arıza nedenleri:
+# - Web tarayıcısında JavaScript etkin değil;
+# - login.html sayfası geçerli değil;
+# - sunucuda sorgulama değerinin süresi doldu (1 saatten fazla hareketsizlik);
+# - http-chap oturum açma yöntemi yakın zamanda kaldırıldı;
+# JavaScript etkinse ve login.html sayfası geçerliyse, yeniden oturum açmaya çalışmak 
+# genellikle bu sorunu çözer.
+
+chap-missing = Web tarayıcısı sorgulama yanıtı göndermedi tekrar deneyin.
+
+# invalid-username (geçersiz kullanıcı adı)
+# En genel geçersiz kullanıcı adı veya şifre durumu. 
+# RADIUS sunucusu Erişim-Reddet mesajı içeren bir hata dizisi gönderdiyse,
+# bu ayarı geçersiz kılar.
+
+invalid-username = Geçersiz kullanıcı adı veya şifre
+
+# invalid-mac (geçersiz-mac)
+# Yerel kullanıcılar (hotspot sunucusunda) bazı MAC adreslerine bağlanabilir. 
+# Farklı MAC'den giriş yapılmaya çalışılırsa bu hata mesajı görüntülenecektir.
+
+invalid-mac = Kullanıcı $(username)'nın bu MAC adresinden giriş yapmasına izin verilmiyor.
+
+# uptime-limit, traffic-limit (çalışma süresi sınırı, trafik sınırı)
+# Sınırlara ulaşılması durumunda yerel erişim noktası kullanıcıları için 
+
+uptime-limit = Kullanıcı $(username) çalışma süresi sınırına ulaştı.
+traffic-limit = Kullanıcı $(username) trafik limitine ulaştı.
+
+# radius-timeout (radius zaman aşımı)
+# Kullanıcı, RADIUS sunucusu tarafından doğrulandı, ancak sunucudan herhangi 
+# bir yanıt alınamadı, aşağıdaki hata gösterilecek.
+
+radius-timeout = RADIUS sunucusu yanıt vermiyor.
+
+# auth-in-progress (kimlik doğrulaması devam ediyor)
+# Yetkilendirme devam ediyor. Müşteri zaten, henüz tamamlanmamış bir 
+# yetkilendirme talebi yayınladı.
+
+auth-in-progress = Zaten yetkilendiriliyor, daha sonra yeniden deneyin.
+
+# radius-reply (radius yanıtı)
+# Radius sunucusu bazı özel hata mesajları döndürdü
+
+radius-reply = $(error-orig)
